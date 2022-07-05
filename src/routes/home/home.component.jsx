@@ -5,6 +5,10 @@
  * Date: 7/2/2022
  * Time: 6:44 PM
  */
+// eslint-disable-next-line no-unused-vars
+// noinspection ES6CheckImport
+// eslint-disable-next-line no-unused-vars
+import { outlet } from "react-router-dom";
 import "../../categories.styles.scss";
 import Directory from "../../components/directory/directory.component";
 
@@ -36,7 +40,12 @@ const Home = () => {
       imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
     },
   ];
-  return <Directory categories={categories} />;
+  return (
+    <div>
+      <outlet />
+      <Directory categories={categories} />
+    </div>
+  );
 };
 
 export default Home;
