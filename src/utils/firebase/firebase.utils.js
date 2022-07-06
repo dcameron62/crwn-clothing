@@ -6,13 +6,7 @@
  */
 
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  signInWithRedirect,
-  signInWithPopup,
-  GoogleAuthProvider,
-} from "firebase/auth";
-
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -28,32 +22,48 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+//Instantiate a google provider
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+//set parameters for google provider
+googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
+//get auth through firebase...singleton
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+//sign in with auth and google provider
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+
+//get a db instance
 export const db = getFirestore();
+
+//create a new user document
 export const createUserDocumentFromAuth = async (userAuth) => {
+  //get user reference
   const userDocRef = doc(db, "users", userAuth.uid);
-  console.log(userDocRef);
 
+  //create a user snapshot and see if the snapshot already exists
   const userSnapshot = await getDoc(userDocRef);
-  console.log(userSnapshot);
-  console.log(userSnapshot.exists());
 
+  //is snapshot is true try to create user login entry
   if (!userSnapshot.exists()) {
+    //get the displayName and email from the user auth
     const { displayName, email } = userAuth;
+
+    //add a date time
     const createdAt = new Date();
 
+    //try to set the user info using the user reference
     try {
       await setDoc(userDocRef, { displayName, email, createdAt });
     } catch (error) {
       console.log("error logging user", error.message);
     }
   }
+
+  //if the user ref already exists return the reference.
   return userDocRef;
 };
