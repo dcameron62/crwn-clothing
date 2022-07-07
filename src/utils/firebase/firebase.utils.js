@@ -6,7 +6,12 @@
  */
 
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -41,10 +46,14 @@ export const signInWithGooglePopup = () =>
 export const db = getFirestore();
 
 //create a new user document
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
   //get user reference
   const userDocRef = doc(db, "users", userAuth.uid);
-
+  console.log(userAuth);
   //create a user snapshot and see if the snapshot already exists
   const userSnapshot = await getDoc(userDocRef);
 
@@ -52,13 +61,19 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   if (!userSnapshot.exists()) {
     //get the displayName and email from the user auth
     const { displayName, email } = userAuth;
+    console.log(displayName, email);
 
     //add a date time
     const createdAt = new Date();
 
     //try to set the user info using the user reference
     try {
-      await setDoc(userDocRef, { displayName, email, createdAt });
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalInformation,
+      });
     } catch (error) {
       console.log("error logging user", error.message);
     }
@@ -66,4 +81,8 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
   //if the user ref already exists return the reference.
   return userDocRef;
+};
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password);
 };

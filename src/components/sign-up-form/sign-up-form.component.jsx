@@ -6,6 +6,10 @@
  * Time: 8:08 PM
  */
 import { useState } from "react";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
   displayName: "",
@@ -18,7 +22,35 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
-  console.log(formFields);
+  const resetFormFields = () => {
+    setFormFields(defaultFormFields);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (formFields.password !== formFields.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+    //create and authorise a user using email and password
+    try {
+      const { user } = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+      //after receiving a valid user create a document from the user auth
+      await createUserDocumentFromAuth(user, { displayName }).then(
+        resetFormFields
+      );
+      // await resetFormFields();
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("Email already in use.");
+      } else {
+        console.error("User creation encountered error. ", error);
+      }
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,7 +58,7 @@ const SignUpForm = () => {
   };
   return (
     <div>
-      <form onSubmit={() => {}}>
+      <form onSubmit={handleSubmit}>
         <label>Display Name</label>
         <input
           type="text"
