@@ -8,7 +8,7 @@
 // eslint-disable-next-line no-unused-vars
 // noinspection ES6CheckImport
 // eslint-disable-next-line no-unused-vars
-import { outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import "../../categories.styles.scss";
 import Directory from "../../components/directory/directory.component";
 
@@ -42,7 +42,7 @@ const Home = () => {
   ];
   return (
     <div>
-      <outlet />
+      <Outlet />
       <Directory categories={categories} />
     </div>
   );
