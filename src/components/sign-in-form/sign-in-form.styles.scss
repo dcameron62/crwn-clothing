@@ -1,0 +1,23 @@
+/**
+* Created by PHP Storm
+* Author: Don Cameron
+* File Type: SCSS
+* Date: 7/12/2022
+* Time: 9:28 PM
+*/
+
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+
+  width: 380px;
+}
+
+h2 {
+  margin: 10px 0;
+}
+
+.buttons-container{
+  display: flex;
+  justify-content: space-between;
+}

@@ -58,6 +58,7 @@ const SignUpForm = () => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
+
   return (
     <div className="sign-up-container">
       <h2>Don't have an account?</h2>
@@ -96,7 +97,7 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <Button buttonType="" children={"Sign In"} />
+        <Button children={"Sign Up"} />
       </form>
     </div>
   );
