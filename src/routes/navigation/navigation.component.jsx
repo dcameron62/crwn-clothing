@@ -1,8 +1,3 @@
-import { Fragment } from "react";
-import { Outlet, Link } from "react-router-dom";
-import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
-import "./navigation.styles.scss";
-
 /**
  * Created by PHP Storm
  * Author: Don Cameron
@@ -10,7 +5,15 @@ import "./navigation.styles.scss";
  * Date: 7/4/2022
  * Time: 10:07 PM
  */
+import { Fragment, useContext } from "react";
+import { Outlet, Link } from "react-router-dom";
+import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
+import { UserContext } from "../../contexts/user.context";
+import "./navigation.styles.scss";
+
 const Navigation = () => {
+  const { currentUser } = useContext(UserContext);
+  console.log(currentUser);
   return (
     <Fragment>
       <div className="navigation">
@@ -23,6 +26,7 @@ const Navigation = () => {
           <Link className="nav-link" to="/shop">
             Shop
           </Link>
+
           <Link className="nav-link" to="/auth">
             Sign In
           </Link>
