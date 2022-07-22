@@ -18,7 +18,6 @@ export const ShopProvider = ({children}) => {
     useEffect(() => {
         return () => {
             setShopData(SHOP_DATA);
-            console.log(shopData)
         };
     }, [shopData]);
 
