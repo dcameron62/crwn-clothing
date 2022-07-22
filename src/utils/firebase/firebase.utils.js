@@ -13,6 +13,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -37,7 +38,7 @@ googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
-//get auth through firebase...singleton
+//get auth through firebase...singleton..runs when signin or signout
 export const auth = getAuth();
 
 //sign in with auth and google provider
@@ -55,7 +56,8 @@ export const createUserDocumentFromAuth = async (
   if (!userAuth) return;
   //get user reference
   const userDocRef = doc(db, "users", userAuth.uid);
-  console.log(userAuth);
+  // console.log(userAuth);
+
   //create a user snapshot and see if the snapshot already exists
   const userSnapshot = await getDoc(userDocRef);
 
@@ -95,3 +97,9 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 };
 
 export const signUserOut = async () => await signOut(auth);
+
+/*
+* observes the state of auth and runs the callback function when that state changes
+* it is an open listener...when mounted it is always waiting to see if the state of auth changes
+* */
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
