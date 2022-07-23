@@ -1,0 +1,28 @@
+/**
+* Created by PHP Storm
+* Author: Don Cameron
+* File Type: SCSS
+* Date: 7/22/2022
+* Time: 9:19 PM
+*/
+.cart-icon-container {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  .shopping-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .item-count {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    bottom: 12px;
+  }
+}
