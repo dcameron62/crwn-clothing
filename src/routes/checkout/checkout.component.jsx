@@ -11,7 +11,7 @@ import "./checkout.styles.scss";
 import CheckOutItem from "../../components/checkout-item/checkout-item.component";
 
 const Checkout = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, deleteItemToCart, cartTotal } = useContext(CartContext);
   return (
     <div className="checkout-container">
       <div className="checkout-header">
@@ -31,11 +31,20 @@ const Checkout = () => {
           <span>Remove</span>
         </div>
       </div>
-      {cartItems.map((cartItem) => (
-        <CheckOutItem key={cartItem.id} cartItem={cartItem} />
-      ))}
+
+        {cartItems.map((cartItem) => (
+          <CheckOutItem
+            key={cartItem.id}
+            cartItem={cartItem}
+            deleteItemToCart={() => {
+              deleteItemToCart(cartItem);
+            }}
+          />
+        ))}
+
+
       <span className="total">
-        <h2>Total: 0</h2>
+        <h2>Total: ${cartTotal}</h2>
       </span>
     </div>
   );

@@ -30,43 +30,79 @@ const addCartItem = (cartItems, productToAdd) => {
 const removeCartItem = (cartItems, cartItemToRemove) => {
   //does the item exist in the cart
   const existingCartItem = cartItems.find(
-      (cartItem) => cartItem.id === cartItemToRemove.id
+    (cartItem) => cartItem.id === cartItemToRemove.id
   );
 
   //if quantity of item = 1 then remove the item from the cart
-  if (existingCartItem.quantity === 1){
-   return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id)
+  if (existingCartItem.quantity === 1) {
+    return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
   }
 
   //find the item in the cart. spread the other properties and decrement the quantity.
   return cartItems.map((cartItem) =>
-      cartItem.id === cartItemToRemove.id
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
+    cartItem.id === cartItemToRemove.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      : cartItem
+  );
+};
+
+const deleteCartItem = (cartItems, cartItemToDelete) => {
+  //does the item exist in the cart
+  const existingCartItem = cartItems.find(
+    (cartItem) => cartItem.id === cartItemToDelete.id
   );
 
+  //if quantity of item = 1 then remove the item from the cart
+  if (existingCartItem) {
+    return cartItems.filter((cartItem) => cartItem.id !== cartItemToDelete.id);
+  }
+};
+
+//loop through all the items in the cart and add their quantity * price to a running total then return the running total.
+const getCartTotal = (cartItems) => {
+  let sum = 0;
+  cartItems.map((item) => {
+    const { quantity, price } = item;
+    sum += quantity * price;
+    return sum;
+  });
+  console.log(sum);
+  return sum;
 };
 
 export const CartContext = createContext({
   isCartOpen: false,
   setIsCartOpen: () => {},
   cartItems: [],
+  cartTotal: 0,
   addItemToCart: () => {},
-  cartCount: 0,
   removeItemToCart: () => {},
+  deleteItemToCart: () => {},
+  cartCount: 0,
 });
 
 export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
+  const [cartTotal, setCartTotal] = useState(0);
 
   useEffect(() => {
     const newCartCount = cartItems.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0
     );
+
     setCartCount(newCartCount);
+  }, [cartItems]);
+
+  useEffect(() => {
+    const newCartTotal = cartItems.reduce(
+      (total, cartItem) => total + cartItem.quantity * cartItem.price,
+      0
+    );
+
+    setCartTotal(newCartTotal);
   }, [cartItems]);
 
   //add an item to the cart for use with the cart context object
@@ -79,12 +115,19 @@ export const CartProvider = ({ children }) => {
     setCartItems(removeCartItem(cartItems, cartItemToRemove));
   };
 
+  //delete an item from the cart
+  const deleteItemToCart = (cartItemToDelete) => {
+    setCartItems(deleteCartItem(cartItems, cartItemToDelete));
+  };
+
   const value = {
     isCartOpen,
     setIsCartOpen,
     addItemToCart,
     removeItemToCart,
+    deleteItemToCart,
     cartItems,
+    cartTotal,
     cartCount,
   };
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

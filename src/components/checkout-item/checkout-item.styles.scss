@@ -5,6 +5,7 @@
 * Date: 7/28/2022
 * Time: 3:07 PM
 */
+
 .checkout-item-container {
   width: 100%;
   display: flex;
@@ -13,6 +14,10 @@
   padding: 15px 0;
   font-size: 20px;
   align-items: center;
+  button{
+    border: none;
+    background-color: white;
+  }
 
   .image-container {
     width: 23%;
