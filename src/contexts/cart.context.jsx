@@ -58,18 +58,6 @@ const deleteCartItem = (cartItems, cartItemToDelete) => {
   }
 };
 
-//loop through all the items in the cart and add their quantity * price to a running total then return the running total.
-const getCartTotal = (cartItems) => {
-  let sum = 0;
-  cartItems.map((item) => {
-    const { quantity, price } = item;
-    sum += quantity * price;
-    return sum;
-  });
-  console.log(sum);
-  return sum;
-};
-
 export const CartContext = createContext({
   isCartOpen: false,
   setIsCartOpen: () => {},
@@ -87,6 +75,7 @@ export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
 
+  //uses the array.reduce function to count all the items in the cart then sets the count to the cart count useState
   useEffect(() => {
     const newCartCount = cartItems.reduce(
       (total, cartItem) => total + cartItem.quantity,
@@ -96,6 +85,7 @@ export const CartProvider = ({ children }) => {
     setCartCount(newCartCount);
   }, [cartItems]);
 
+  //uses the array.reduce to get a sum of all extended prices and set it in the cart total
   useEffect(() => {
     const newCartTotal = cartItems.reduce(
       (total, cartItem) => total + cartItem.quantity * cartItem.price,

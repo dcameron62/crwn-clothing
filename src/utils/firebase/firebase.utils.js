@@ -15,7 +15,14 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -47,6 +54,24 @@ export const signInWithGooglePopup = () =>
 
 //get a db instance
 export const db = getFirestore();
+
+//create a collection and add data
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd,
+  field
+) => {
+  const batch = writeBatch(db);
+  const collectionRef = collection(db, collectionKey);
+
+  objectsToAdd.forEach((object) => {
+     const docRef = doc(collectionRef, object[field].toLowerCase());
+     batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log('done');
+};
 
 //create a new user document
 export const createUserDocumentFromAuth = async (
@@ -99,7 +124,8 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signUserOut = async () => await signOut(auth);
 
 /*
-* observes the state of auth and runs the callback function when that state changes
-* it is an open listener...when mounted it is always waiting to see if the state of auth changes
-* */
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
+ * observes the state of auth and runs the callback function when that state changes
+ * it is an open listener...when mounted it is always waiting to see if the state of auth changes
+ * */
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);

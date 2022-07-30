@@ -5,21 +5,16 @@
  * Date: 7/22/2022
  * Time: 8:12 AM
  */
-import {createContext, useEffect, useState} from "react";
-import SHOP_DATA from "../shop-data.json";
+import { createContext, useEffect, useState } from "react";
 
 export const ShopContext = createContext({
-    setShopData: SHOP_DATA
+  products: [],
 });
 
-export const ShopProvider = ({children}) => {
-    const [shopData, setShopData] = useState(SHOP_DATA);
-    const value = {shopData, setShopData};
-    useEffect(() => {
-        return () => {
-            setShopData(SHOP_DATA);
-        };
-    }, [shopData]);
+export const ShopProvider = ({ children }) => {
+  const [products, setProducts] = useState([]);
+  const value = { products };
 
-    return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
+
+  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 };
