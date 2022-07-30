@@ -5,24 +5,17 @@
  * Time: 3:56 PM
  */
 
-import { initializeApp } from "firebase/app";
+import {initializeApp} from "firebase/app";
 import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
+  getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
 } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  writeBatch,
-} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, getFirestore, query, setDoc, writeBatch,} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -55,22 +48,34 @@ export const signInWithGooglePopup = () =>
 //get a db instance
 export const db = getFirestore();
 
-//create a collection and add data
+//create a collection and add data using a batch method
 export const addCollectionAndDocuments = async (
   collectionKey,
   objectsToAdd,
-  field
 ) => {
   const batch = writeBatch(db);
   const collectionRef = collection(db, collectionKey);
 
   objectsToAdd.forEach((object) => {
-     const docRef = doc(collectionRef, object[field].toLowerCase());
+     const docRef = doc(collectionRef, object.title.toLowerCase());
      batch.set(docRef, object);
   });
 
   await batch.commit();
   console.log('done');
+};
+
+//get categories and documents from firebase
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
 };
 
 //create a new user document

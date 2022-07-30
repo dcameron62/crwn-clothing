@@ -5,21 +5,28 @@
  * Date: 7/22/2022
  * Time: 7:57 AM
  */
-import { useContext } from "react";
-import { ShopContext } from "../../contexts/shop.context";
+import { Fragment, useContext } from "react";
+import { CategoriesContext } from "../../contexts/categories.context";
 import ShopCardComponent from "../../components/shop-card/shop-card.component";
-import './shop.styles.scss';
+import "./shop.styles.scss";
 
 const Shop = () => {
-  const { shopData } = useContext(ShopContext);
+  const { categoriesMap } = useContext(CategoriesContext);
   return (
-    <div className='products-container'>
-      {shopData.map((shop) => (
-        <div key={shop.id}>
-          <ShopCardComponent shopData={shop} />
-        </div>
+    <Fragment>
+      {Object.keys(categoriesMap).map((title) => (
+        <Fragment key={title}>
+          <h2>{title}</h2>
+          <div className="products-container">
+            {categoriesMap[title].map((category) => (
+              <div key={category.id}>
+                <ShopCardComponent shopData={category} />
+              </div>
+            ))}
+          </div>
+        </Fragment>
       ))}
-    </div>
+    </Fragment>
   );
 };
 
