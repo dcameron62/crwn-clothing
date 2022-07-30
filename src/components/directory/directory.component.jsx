@@ -5,15 +5,15 @@
  * Date: 7/2/2022
  * Time: 4:36 PM
  */
-import CategoryItem from "../category-item/category-item.component";
 import "./directory-container.styles.scss";
+import DirectoryItem from "../directory-item/directory-item.component";
 
 const Directory = ({ categories }) => {
   // const cat = categories.categories;
   return (
     <div className="categories-container">
       {categories.map((category) => (
-        <CategoryItem key={category.id} category={category} />
+        <DirectoryItem key={category.id} category={category} />
       ))}
     </div>
   );
