@@ -12,15 +12,14 @@ import CartItem from "../cart-item/cart-item.component";
 import { useNavigate } from "react-router-dom";
 import {CartDropDownContainer, CartItems} from "./cart-component.styles";
 
-
 const CartDropdownComponent = () => {
   const { cartItems } = useContext(CartContext);
 
   const navigate = useNavigate();
 
   const goToCheckOutHandler = () => {
-      navigate('/checkout')
-  }
+    navigate("/checkout");
+  };
 
   return (
     <CartDropDownContainer>
@@ -30,7 +29,7 @@ const CartDropdownComponent = () => {
         ))}
       </CartItems>
       <div>
-          <Button onClick={goToCheckOutHandler}>Go To Checkout</Button>
+        <Button onClick={goToCheckOutHandler}>Go To Checkout</Button>
       </div>
     </CartDropDownContainer>
   );
