@@ -7,8 +7,8 @@
  */
 import {useContext} from "react";
 import {CartContext} from "../../contexts/cart.context";
-import "./shop-card.styles.scss";
 import Button from "../button/button.component";
+import {Name, Price, Footer, ProductCardContainer} from './shop-card.styles'
 
 const ShopCard = ({shopData}) => {
     const {name, imageUrl, price} = shopData;
@@ -17,14 +17,14 @@ const ShopCard = ({shopData}) => {
     const addProductToCart = () => addItemToCart(shopData)
 
     return (
-        <div className="product-card-container">
+        <ProductCardContainer>
             <img src={imageUrl} alt={`${name}`}/>
-            <div className="footer">
-                <span className="name">{name}</span>
-                <span className="price">{price}</span>
+            <Footer>
+                <Name>{name}</Name>
+                <Price>{price}</Price>
                 <Button buttonType="inverted" onClick={addProductToCart}>Add to cart</Button>
-            </div>
-        </div>
+            </Footer>
+        </ProductCardContainer>
     );
 };
 

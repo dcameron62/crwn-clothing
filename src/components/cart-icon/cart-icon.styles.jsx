@@ -5,7 +5,9 @@
 * Date: 7/22/2022
 * Time: 9:19 PM
 */
-.cart-icon-container {
+import styled from 'styled-components'
+
+export const CartIconContainer = styled.div`
   width: 45px;
   height: 45px;
   position: relative;
@@ -13,16 +15,14 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
-  .shopping-icon {
+`
+    export const ShoppingIconStyle = styled.div`
     width: 24px;
-    height: 24px;
-  }
-
-  .item-count {
+    height: 24px;    
+    `
+    export const ItemCount = styled.span`
     position: absolute;
     font-size: 10px;
     font-weight: bold;
-    bottom: 12px;
-  }
-}
+    bottom: 12px;    
+    `

@@ -7,10 +7,10 @@
  */
 
 import { useParams } from "react-router-dom";
-import "./category.styles.scss";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { CategoriesContext } from "../../contexts/categories.context";
 import ShopCard from "../../components/shop-card/shop-card.component";
+import {CategoryContainer, CategoryTitle} from "./category.styles";
 
 const Category = () => {
   //make the use of parameters available. use params comes in as an object
@@ -26,13 +26,13 @@ const Category = () => {
   }, [category, categoriesMap]);
   return (
     <Fragment>
-      <h2 className="category-title">{category.toUpperCase()}</h2>
-      <div className="category-container">
+      <CategoryTitle>{category.toUpperCase()}</CategoryTitle>
+      <CategoryContainer>
         {products &&
           products.map((product) => (
             <ShopCard key={product.id} shopData={product} />
           ))}
-      </div>
+      </CategoryContainer>
     </Fragment>
   );
 };

@@ -6,23 +6,22 @@
  * Time: 7:32 AM
  */
 
-import "./category-preview.styles.scss";
 import ShopCard from "../shop-card/shop-card.component";
-import {Link} from "react-router-dom";
+import {CategoryPreviewContainer, Preview, Title} from "./category-preview.styles";
 
 const CategoryPreview = ({ title, products }) => {
   return (
-    <div className="category-preview-container">
+    <CategoryPreviewContainer>
       <h2>
-        <Link to={title} className="title">{title.toUpperCase()}</Link>
+        <Title to={title}>{title.toUpperCase()}</Title>
       </h2>
-      <div className="preview">
+      <Preview>
         {products.filter((_, idx) => idx < 4 ).map((product)=>{
             return (<ShopCard key={product.id} shopData={product} />)
 
         })}
-      </div>
-    </div>
+      </Preview>
+    </CategoryPreviewContainer>
   );
 };
 
