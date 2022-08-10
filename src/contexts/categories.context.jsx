@@ -16,19 +16,22 @@ export const CategoriesProvider = ({ children }) => {
   const [categoriesMap, setCategoriesMap] = useState({});
 
   //if you are calling something that is an async function inside of the useEffect you need to wrap it with another function and call it at that function at the bottom of the useEffect.
-  useEffect( () => {
+  useEffect(() => {
     const getCategoriesMap = async () => {
-
-      const categoryMap = await getCategoriesAndDocuments('categories');
+      const categoryMap = await getCategoriesAndDocuments("categories");
       setCategoriesMap(categoryMap);
       console.log(categoryMap);
     };
 
-    getCategoriesMap().then(() => {
-      console.log('done from useEffect')});
+    getCategoriesMap();
+
   }, []);
 
   const value = { categoriesMap };
 
-  return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>;
+  return (
+    <CategoriesContext.Provider value={value}>
+      {children}
+    </CategoriesContext.Provider>
+  );
 };
