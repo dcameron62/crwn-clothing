@@ -4,17 +4,15 @@
  * Date: 8/9/2022
  * Time: 7:11 PM
  */
-import {
-  compose,
-  legacy_createStore as createStore,
-  applyMiddleware,
-} from "redux";
-import logger from "redux-logger";
+import { compose, createStore, applyMiddleware } from 'redux';
+import logger from 'redux-logger';
 
-import { rootReducer } from "./root-reducer";
+import { rootReducer } from './root-reducer';
 
-const middleWares = [logger];
+const middleWares = [process.env.NODE_ENV === 'development' && logger].filter(
+    Boolean
+);
 
-const composeEnhancers = compose(applyMiddleware(...middleWares));
+const composedEnhancers = compose(applyMiddleware(...middleWares));
 
-export const store = createStore(rootReducer, undefined, composeEnhancers);
+export const store = createStore(rootReducer, undefined, composedEnhancers);
