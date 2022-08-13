@@ -20,19 +20,17 @@ export const UserContext = createContext({
   currentUser: null,
 });
 
-//object that can be used in the code to prevent typo's when using actions...this is used the the user reducer switch statement.
 export const USER_ACTION_TYPES = {
   SET_CURRENT_USER: "SET_CURRENT_USER",
 };
-/*-------------------------------------------------user reducer------------------------------------------------------*/
-//create user reducer with state and action
+
+const INITIAL_STATE = {
+  currentUser: null,
+};
+
 const userReducer = (state, action) => {
-  //deconstruct action into type and payload...type being a string and payload being the user in this case
   const { type, payload } = action;
 
-  /*switch depending on the type of action called, in the case of SET_CURRENT_USER the state properties are spread in
-   * then the current user is being set to the payload...NOTE...this returns a NEW OBJECT so the state will update
-   */
   switch (type) {
     case USER_ACTION_TYPES.SET_CURRENT_USER:
       return {
@@ -43,12 +41,8 @@ const userReducer = (state, action) => {
       throw new Error(`unhandled type ${type} in the user reducer`);
   }
 };
-/*-------------------------------------user reducer-------------------------------------------------------------------*/
 
-//set the initial state for the current user to be used in the useReducer function below
-const INITIAL_STATE = {
-  currentUser: null,
-};
+
 
 export const UserProvider = ({ children }) => {
   //useReducer hook is used instead of useState
@@ -61,8 +55,6 @@ export const UserProvider = ({ children }) => {
   /*setCurrentUser that is shared from the current user context is defined....setCurrentUser was used by the useState hook
    * but now is being user by reducer and context*/
   const setCurrentUser = (user) => {
-    /*when it is called you pass it an action object. takes the action and passes it into the reducer and runs through
-     * the switch statement and update the reducer*/
     dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
   };
 
@@ -71,12 +63,14 @@ export const UserProvider = ({ children }) => {
 
   //runs use effect when user context loads the first time
   useEffect(() => {
-    return onAuthStateChangedListener((user) => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
       setCurrentUser(user);
     });
+
+    return unsubscribe;
   }, []);
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
