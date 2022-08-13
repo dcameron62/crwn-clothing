@@ -1,20 +1,17 @@
 /**
  * Created by PHP Storm
  * Author: Don Cameron
- * Date: 8/9/2022
- * Time: 7:11 PM
+ * Date: 8/11/2022
+ * Time: 6:43 PM
  */
-import {
-  compose,
-  legacy_createStore as createStore,
-  applyMiddleware,
-} from "redux";
-import logger from "redux-logger";
 
-import { rootReducer } from "./root-reducer";
+import {compose, createStore, applyMiddleware} from "redux";
+import {logger} from "redux-logger";
 
-const middleWares = [logger];
+import {rootReducer} from "./root-reducer";
 
-const composeEnhancers = compose(applyMiddleware(...middleWares));
+const middleWares = [logger]
 
-export const store = createStore(rootReducer, undefined, composeEnhancers);
+const composedEnhancers = compose(applyMiddleware(...middleWares))
+
+export const store = createStore(rootReducer, undefined, composedEnhancers)

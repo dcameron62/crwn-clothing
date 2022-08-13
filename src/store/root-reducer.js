@@ -1,13 +1,14 @@
 /**
  * Created by PHP Storm
  * Author: Don Cameron
- * Date: 8/9/2022
- * Time: 7:41 PM
+ * Date: 8/11/2022
+ * Time: 6:47 PM
  */
 
 import {combineReducers} from "redux";
+
 import {userReducer} from "./user/user.reducer";
 
 export const rootReducer = combineReducers({
-    user: userReducer
+user: userReducer
 })
